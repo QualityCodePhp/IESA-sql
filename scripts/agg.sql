@@ -87,3 +87,16 @@ LEFT JOIN price p
     ON op.id_price = p.id_price
 GROUP BY order_year DESC, order_month DESC WITH ROLLUP
 ;
+
+-- export yesterday orders
+-- SHOW VARIABLES LIKE "secure_file_priv";
+-- LOAD DATA INFILE '/path/to/file.csv' INTO TABLE table1;
+SELECT
+    *
+FROM customer_order
+WHERE DATE_SUB(CURDATE(), INTERVAL 1 DAY) = customer_order.order_date
+INTO OUTFILE '/var/lib/mysql-files/orders.csv'
+FIELDS ENCLOSED BY '"'
+TERMINATED BY ';'
+ESCAPED BY '"'
+LINES TERMINATED BY '\n';

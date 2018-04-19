@@ -1,3 +1,4 @@
+use mywebsite;
 
 INSERT INTO `customer` (`id_customer`, `firstname`, `lastname`, `birthday`, `phone`, `email`, `created_at`, `updated_at`, `deleted_at`, `number_orders`) VALUES (1, 'Anna', 'Waters', '1972-02-26', '1-732-724-9208', 'teresa48@example.org', '1977-10-05 03:14:48', NULL, NULL, 0);
 INSERT INTO `customer` (`id_customer`, `firstname`, `lastname`, `birthday`, `phone`, `email`, `created_at`, `updated_at`, `deleted_at`, `number_orders`) VALUES (2, 'Erik', 'Legros', '1995-12-03', '1-118-431-1347x', 'wiza.alford@example.net', '1975-01-08 18:56:46', NULL, NULL, 0);
@@ -6887,5 +6888,3 @@ INSERT INTO `order_products` (`id_customer_order`, `id_price`, `id_product`) VAL
 INSERT INTO `order_products` (`id_customer_order`, `id_price`, `id_product`) VALUES (31, 3, 28);
 INSERT INTO `order_products` (`id_customer_order`, `id_price`, `id_product`) VALUES (638, 426, 51);
 INSERT INTO `order_products` (`id_customer_order`, `id_price`, `id_product`) VALUES (398, 294, 33);
-
-
