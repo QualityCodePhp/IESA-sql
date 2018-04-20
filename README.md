@@ -10,6 +10,7 @@
 ## Tools
 
 * http://filldb.info
+* https://www.percona.com/doc/percona-toolkit/3.0/index.html
 
 ## Ressources
 
@@ -20,3 +21,4 @@
 * http://www.tutorialspoint.com/sql/index.htm
 * https://www.pluralsight.com/paths/mysql
 * http://sql.sh/
+* https://dev.mysql.com/doc/refman/8.0/en/fulltext-natural-language.html
