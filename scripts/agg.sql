@@ -186,3 +186,59 @@ FROM (
 ) turnover_by_month
 GROUP BY order_month DESC
 ;
+
+-- with view
+CREATE OR REPLACE VIEW v_order_stats as
+SELECT
+    MONTH(co.order_date) as order_month
+    , coalesce(sum(op.quantity * p.value), 0) as turnover
+    , count(co.id_customer_order) as num_order
+    , sum(op.quantity) as num_product
+    , group_concat(DISTINCT p.id_product
+                  ORDER BY p.id_product DESC SEPARATOR ', ') as products
+FROM customer_order co
+LEFT JOIN order_products op
+    ON co.id_customer_order = op.id_customer_order
+LEFT JOIN price p
+    ON op.id_price = p.id_price
+GROUP BY order_month
+;
+
+-- REFACTOR
+
+-- REFACTOR average turnover by month
+SELECT
+    order_month
+    , coalesce(avg(turnover), 0) as average_turnover
+FROM v_order_stats
+GROUP BY order_month DESC
+;
+
+-- REFACTOR average turnover by month, with sold products id list
+SELECT
+    order_month
+    , coalesce(avg(turnover), 0) as average_turnover
+    , coalesce(products, '') as products
+FROM v_order_stats
+GROUP BY order_month DESC
+;
+
+-- REFACTOR average turnover by month, with sold products id list, num sold product
+SELECT
+    order_month
+    , coalesce(avg(turnover), 0) as average_turnover
+    , coalesce(products, '') as products
+FROM v_order_stats
+GROUP BY order_month DESC
+;
+
+-- REFACTOR average turnover by month, with sold products id list, num sold product, num order
+SELECT
+    order_month
+    , num_order
+    , num_product
+    , coalesce(avg(turnover), 0) as average_turnover
+    , coalesce(products, '') as products
+FROM v_order_stats
+GROUP BY order_month DESC
+;
