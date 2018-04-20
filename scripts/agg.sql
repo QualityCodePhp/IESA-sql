@@ -149,7 +149,32 @@ FROM (
     SELECT
         MONTH(co.order_date) as order_month
         , coalesce(sum(op.quantity * p.value), 0) as turnover
-        , count(op.quantity) as num_product
+        , sum(op.quantity) as num_product
+        , group_concat(DISTINCT p.id_product
+                      ORDER BY p.id_product DESC SEPARATOR ', ') as products
+    FROM customer_order co
+    LEFT JOIN order_products op
+        ON co.id_customer_order = op.id_customer_order
+    LEFT JOIN price p
+        ON op.id_price = p.id_price
+    GROUP BY order_month
+) turnover_by_month
+GROUP BY order_month DESC
+;
+
+-- average turnover by month, with sold products id list, num sold product, num order
+SELECT
+    order_month
+    , num_order
+    , num_product
+    , coalesce(avg(turnover), 0) as average_turnover
+    , coalesce(products, '') as products
+FROM (
+    SELECT
+        MONTH(co.order_date) as order_month
+        , coalesce(sum(op.quantity * p.value), 0) as turnover
+        , count(co.id_customer_order) as num_order
+        , sum(op.quantity) as num_product
         , group_concat(DISTINCT p.id_product
                       ORDER BY p.id_product DESC SEPARATOR ', ') as products
     FROM customer_order co
