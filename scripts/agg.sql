@@ -91,6 +91,7 @@ GROUP BY order_year DESC, order_month DESC WITH ROLLUP
 -- export yesterday orders
 -- SHOW VARIABLES LIKE "secure_file_priv";
 -- LOAD DATA INFILE '/path/to/file.csv' INTO TABLE table1;
+\! rm /var/lib/mysql-files/orders.csv
 SELECT
     *
 FROM customer_order

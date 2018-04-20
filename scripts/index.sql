@@ -12,7 +12,7 @@ CREATE INDEX product_ean ON product (ean16);
 
 DROP INDEX product_ean ON product;
 
-CREATE INDEX product_ean_id ON product (ean16, id_product);
+CREATE INDEX product_ean ON product (ean16, id_product);
 
 CREATE FULLTEXT INDEX product_name_description ON product (name, description);
 

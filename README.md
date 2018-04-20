@@ -11,6 +11,7 @@
 
 * http://filldb.info
 * https://www.percona.com/doc/percona-toolkit/3.0/index.html
+* https://www.percona.com/doc/percona-toolkit/3.0/pt-query-digest.html
 
 ## Ressources
 
