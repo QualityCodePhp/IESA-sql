@@ -100,3 +100,64 @@ FIELDS ENCLOSED BY '"'
 TERMINATED BY ';'
 ESCAPED BY '"'
 LINES TERMINATED BY '\n';
+
+-- average turnover by month
+SELECT
+    order_month
+    , coalesce(avg(turnover), 0) as average_turnover
+FROM (
+    SELECT
+        MONTH(co.order_date) as order_month
+        , coalesce(sum(op.quantity * p.value), 0) as turnover
+    FROM customer_order co
+    LEFT JOIN order_products op
+        ON co.id_customer_order = op.id_customer_order
+    LEFT JOIN price p
+        ON op.id_price = p.id_price
+    GROUP BY order_month
+) turnover_by_month
+GROUP BY order_month DESC
+;
+
+-- average turnover by month, with sold products id list
+SELECT
+    order_month
+    , coalesce(avg(turnover), 0) as average_turnover
+    , coalesce(products, '') as products
+FROM (
+    SELECT
+        MONTH(co.order_date) as order_month
+        , coalesce(sum(op.quantity * p.value), 0) as turnover
+        , group_concat(DISTINCT p.id_product
+                      ORDER BY p.id_product DESC SEPARATOR ', ') as products
+    FROM customer_order co
+    LEFT JOIN order_products op
+        ON co.id_customer_order = op.id_customer_order
+    LEFT JOIN price p
+        ON op.id_price = p.id_price
+    GROUP BY order_month
+) turnover_by_month
+GROUP BY order_month DESC
+;
+
+-- average turnover by month, with sold products id list, num sold product
+SELECT
+    order_month
+    , coalesce(avg(turnover), 0) as average_turnover
+    , coalesce(products, '') as products
+FROM (
+    SELECT
+        MONTH(co.order_date) as order_month
+        , coalesce(sum(op.quantity * p.value), 0) as turnover
+        , count(op.quantity) as num_product
+        , group_concat(DISTINCT p.id_product
+                      ORDER BY p.id_product DESC SEPARATOR ', ') as products
+    FROM customer_order co
+    LEFT JOIN order_products op
+        ON co.id_customer_order = op.id_customer_order
+    LEFT JOIN price p
+        ON op.id_price = p.id_price
+    GROUP BY order_month
+) turnover_by_month
+GROUP BY order_month DESC
+;
